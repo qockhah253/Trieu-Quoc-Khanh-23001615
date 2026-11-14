@@ -1,0 +1,83 @@
+== [1] docker version ==
+Client 29.9.3 / Server 29.9.3
+
+== [2] Build image env-demo:1.0 từ Dockerfile.offline ==
+sha256:1df2776a98a56a75d9a3978a588b95a3fd3b5b286231c61e57e9acb7bdda73ef
+IMAGE          ID             DISK USAGE   CONTENT SIZE   EXTRA
+env-demo:1.0   1df2776a98a5        154MB         37.8MB        
+
+== [3] Lịch sử layer của image ==
+CREATED BY                                      SIZE
+CMD ["/opt/python/bin/python3.12" "app.py"]     0B
+EXPOSE [8000/tcp]                               0B
+ENV PORT=8000 GREETING=Hello from Docker con…   0B
+COPY app.py . # buildkit                        12.3kB
+WORKDIR /app                                    8.19kB
+                                                116MB
+
+== [4] Chạy 2 container từ CÙNG 1 image, khác port + biến môi trường ==
+NAMES     IMAGE          PORTS                    STATUS
+c2        env-demo:1.0   0.0.0.0:8002->8000/tcp   Up 2 seconds
+c1        env-demo:1.0   0.0.0.0:8001->8000/tcp   Up 2 seconds
+
+== [5] Gọi API trong từng container (chú ý hostname khác nhau, pid = 1) ==
+--- c1 (172.17.0.2) ---
+{
+  "message": "Hello from Docker container!",
+  "hostname": "704d0b7aa142",
+  "pid": 1,
+  "python": "3.12.13",
+  "kernel": "6.18.44-fc-v470",
+  "cwd": "/app",
+  "files_in_root": [
+    ".dockerenv",
+    "app",
+    "dev",
+    "etc",
+    "lib",
+    "lib64",
+    "opt",
+    "proc",
+    "sys",
+    "tmp"
+  ]
+}
+--- c2 (172.17.0.3) ---
+{
+  "message": "Xin chao tu container 2",
+  "hostname": "b62f7e019881",
+  "pid": 1,
+  "python": "3.12.13",
+  "kernel": "6.18.44-fc-v470",
+  "cwd": "/app",
+  "files_in_root": [
+    ".dockerenv",
+    "app",
+    "dev",
+    "etc",
+    "lib",
+    "lib64",
+    "opt",
+    "proc",
+    "sys",
+    "tmp"
+  ]
+}
+
+Kernel của HOST: 6.18.44-fc-v470  -> giống kernel trong container (dùng chung kernel)
+
+== [6] Từ host: container chỉ là 1 process bình thường ==
+PID                 USER                CMD
+2601                root                /opt/python/bin/python3.12 app.py
+PID của c1 nhìn từ host: 2601  (bên trong container nó là PID 1)
+
+== [7] Giới hạn tài nguyên (cgroups) của c2 ==
+Memory=134217728 bytes, NanoCpus=500000000
+
+== [8] Logs ==
+Listening on 0.0.0.0:8000
+172.17.0.1 - - [14/Nov/2026 16:48:00] "GET / HTTP/1.1" 200 -
+
+== [9] Dọn dẹp ==
+c1
+c2

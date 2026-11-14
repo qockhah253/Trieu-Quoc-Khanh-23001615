@@ -1,0 +1,29 @@
+# Demo Virtual Machine bằng Vagrant + VirtualBox (Type-2 hypervisor)
+# Yêu cầu: VirtualBox 7.x + Vagrant 2.4.x, BIOS bật Intel VT-x / AMD-V
+# Chạy trong thư mục này:  vagrant up  ->  vagrant ssh  ->  vagrant destroy -f
+Vagrant.configure("2") do |config|
+  config.vm.box      = "bento/ubuntu-24.04"   # Guest OS: Ubuntu 24.04 (kernel Linux riêng)
+  config.vm.hostname = "khanh-vm"
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.name   = "env-demo-vm"
+    vb.memory = 2048                          # 2 GB RAM ảo
+    vb.cpus   = 2                             # 2 vCPU
+  end
+
+  # Forward cổng: localhost:8080 trên Windows -> cổng 8000 trong VM
+  config.vm.network "forwarded_port", guest: 8000, host: 8080
+
+  # Thư mục project trên host được chia sẻ vào /vagrant trong VM
+  config.vm.synced_folder "../06_docker", "/vagrant_app"
+
+  # Provision: chạy khi tạo VM lần đầu
+  config.vm.provision "shell", inline: <<-SHELL
+    echo "== Guest OS ==";      cat /etc/os-release | head -2
+    echo "== Guest kernel =="; uname -r
+    echo "== RAM / CPU ==";    free -h | head -2; nproc
+    apt-get update -qq && apt-get install -y -qq python3 > /dev/null
+    nohup python3 /vagrant_app/app.py > /tmp/app.log 2>&1 &
+    echo "App chạy trong VM, mở http://localhost:8080 trên Windows"
+  SHELL
+end

@@ -1,0 +1,9 @@
+# Biến thể dùng khi KHÔNG truy cập được Docker Hub (môi trường chạy demo output.txt).
+# Base image "local/python-minimal:3.12" được tạo bằng `docker import` từ 1 rootfs tự dựng
+# (chỉ gồm CPython 3.12 + glibc) - xem build_base_image.sh.
+FROM local/python-minimal:3.12
+WORKDIR /app
+COPY app.py .
+ENV PORT=8000 GREETING="Hello from Docker container!"
+EXPOSE 8000
+CMD ["/opt/python/bin/python3.12", "app.py"]

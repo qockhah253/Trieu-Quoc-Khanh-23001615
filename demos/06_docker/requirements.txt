@@ -1,0 +1,2 @@
+# app.py chỉ dùng thư viện chuẩn; dòng dưới để minh hoạ layer cài thư viện
+requests==2.32.3

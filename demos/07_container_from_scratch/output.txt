@@ -1,0 +1,13 @@
+== [1] Nhìn từ HOST ==
+hostname          : vm
+số process thấy   : 76
+PID của shell này : 2881
+
+== [2] Tạo 'container' bằng: unshare (uts+pid+mount+ipc+net namespace) + chroot ==
+hostname          : my-container
+PID của chính nó  : 1
+process thấy được : ['1']
+thư mục gốc /     : ['dev', 'etc', 'lib', 'lib64', 'opt', 'proc', 'tmp']
+card mạng         : ['lo']
+
+== [3] Sau khi thoát, hostname của HOST không đổi: vm ==
