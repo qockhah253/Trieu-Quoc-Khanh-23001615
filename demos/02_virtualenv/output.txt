@@ -1,0 +1,16 @@
+== [1] Cài virtualenv (vào 1 venv công cụ riêng, không bẩn Python hệ thống) ==
+virtualenv 21.15.6 from /tmp/ve_demo/tools/lib/python3.13/site-
+packages/virtualenv/__init__.py
+
+== [2] Tạo env bằng virtualenv, có chọn interpreter bằng -p ==
+Python version : 3.13.18
+sys.executable : /tmp/ve_demo/env1/bin/python
+sys.prefix     : /tmp/ve_demo/env1
+base_prefix    : /usr/local
+In a venv?     : True
+requests       : (not installed)
+six            : 1.16.0
+
+== [3] So sánh thời gian tạo env (5 lần mỗi loại) ==
+venv       : 2.02 s/env
+virtualenv : 0.25 s/env

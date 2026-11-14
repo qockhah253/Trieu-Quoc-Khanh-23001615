@@ -1,0 +1,46 @@
+== [1] conda version ==
+conda 26.9.4
+
+== [2] Tạo env 'ai312' với Python 3.12 + numpy + ffmpeg (ffmpeg là binary C, không phải package Python) ==
+
+
+# conda environments:
+#
+# * -> active
+# + -> frozen
+base                     /opt/miniforge
+ai312                    /opt/miniforge/envs/ai312
+
+
+== [3] Activate và kiểm tra ==
+Python 3.12.16
+prefix: /opt/miniforge/envs/ai312
+numpy 2.5.4
+ffmpeg: /opt/miniforge/envs/ai312/bin/ffmpeg
+ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers
+
+== [4] Export environment.yml (--from-history: chỉ package đã yêu cầu) ==
+name: ai312
+channels:
+  - conda-forge
+dependencies:
+  - ffmpeg
+  - python=3.12
+  - numpy
+
+== [5] Tạo lại env từ file (tái lập) ==
+
+clone numpy 2.5.4
+
+== [6] Kích thước env (so với venv ~16MB) ==
+929M	/opt/miniforge/envs/ai312
+
+== [7] Dọn dẹp ==
+
+# conda environments:
+#
+# * -> active
+# + -> frozen
+base                     /opt/miniforge
+ai312                    /opt/miniforge/envs/ai312
+

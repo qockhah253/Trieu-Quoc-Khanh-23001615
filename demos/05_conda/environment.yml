@@ -1,0 +1,7 @@
+name: ai312
+channels:
+  - conda-forge
+dependencies:
+  - ffmpeg
+  - python=3.12
+  - numpy

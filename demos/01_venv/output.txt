@@ -1,0 +1,47 @@
+== [0] Python toàn cục (host) ==
+Python version : 3.13.18
+sys.executable : /usr/local/bin/python3
+sys.prefix     : /usr/local
+base_prefix    : /usr/local
+In a venv?     : False
+requests       : 2.34.2
+six            : 1.17.0
+
+== [1] Tạo venv cho projectA và projectB ==
+Nội dung pyvenv.cfg của projectA:
+home = /usr/local/bin
+include-system-site-packages = false
+version = 3.13.18
+executable = /usr/local/bin/python3.13
+command = /usr/local/bin/python3 -m venv /tmp/venv_demo/projectA/.venv
+
+== [2] Cài 2 phiên bản requests khác nhau ==
+
+== [3] projectA (activate rồi chạy) ==
+/tmp/venv_demo/projectA/.venv/bin/python
+Python version : 3.13.18
+sys.executable : /tmp/venv_demo/projectA/.venv/bin/python
+sys.prefix     : /tmp/venv_demo/projectA/.venv
+base_prefix    : /usr/local
+In a venv?     : True
+requests       : 2.31.0
+six            : (not installed)
+requirements.txt:
+certifi==2026.10.23
+charset-normalizer==3.5.2
+idna==3.20
+requests==2.31.0
+urllib3==2.8.0
+
+== [4] projectB (không activate, gọi thẳng đường dẫn python) ==
+Python version : 3.13.18
+sys.executable : /tmp/venv_demo/projectB/.venv/bin/python
+sys.prefix     : /tmp/venv_demo/projectB/.venv
+base_prefix    : /usr/local
+In a venv?     : True
+requests       : 2.32.3
+six            : (not installed)
+
+== [5] Kích thước venv ==
+16M	/tmp/venv_demo/projectA/.venv
+16M	/tmp/venv_demo/projectB/.venv

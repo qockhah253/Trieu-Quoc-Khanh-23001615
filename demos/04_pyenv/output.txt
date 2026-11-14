@@ -1,0 +1,42 @@
+== [1] pyenv version ==
+pyenv 2.8.15
+
+== [2] Số bản CPython có thể cài: ==
+216
+  3.13.16
+  3.13.17
+  3.13.18
+
+== [3] Đăng ký 2 phiên bản ==
+* system (set by /root/.pyenv/version)
+  3.12 --> /root/.local/share/uv/python/cpython-3.12.13-linux-x86_64-gnu
+  3.13 --> /usr/local
+
+== [4] pyenv global 3.13 ==
+Python 3.13.18
+which python -> /root/.pyenv/shims/python  (đây là SHIM)
+
+== [5] pyenv local 3.12 trong thư mục project_old ==
+.python-version = 3.12
+Python 3.12.13
+pyenv which python -> /root/.pyenv/versions/3.12/bin/python
+
+== [6] Ra khỏi thư mục -> quay về global ==
+Python 3.13.18
+
+== [7] Kết hợp pyenv + venv ==
+Python 3.12.13
+
+== [8] Nội dung 1 shim ==
+#!/usr/bin/env bash
+set -e
+[ -n "$PYENV_DEBUG" ] && set -x
+
+program="${0##*/}"
+
+export PYENV_ROOT="/root/.pyenv"
+SHIM_PATH=${0%/*}
+if [[ $SHIM_PATH != "/root/.pyenv/shims" ]]; then
+  export _PYENV_SHIM_PATH="$SHIM_PATH"
+fi
+exec "/root/.pyenv/libexec/pyenv" exec "$program" "$@"

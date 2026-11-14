@@ -1,0 +1,73 @@
+== [1] Phiên bản uv ==
+uv 0.11.32 (x86_64-unknown-linux-gnu)
+
+== [2] Các bản Python uv thấy/quản lý được (rút gọn) ==
+cpython-3.15.0b4-linux-x86_64-gnu                 <download available>
+cpython-3.15.0b4+freethreaded-linux-x86_64-gnu    <download available>
+cpython-3.14.6-linux-x86_64-gnu                   <download available>
+cpython-3.14.6+freethreaded-linux-x86_64-gnu      <download available>
+cpython-3.13.18-linux-x86_64-gnu                  /usr/local/bin/python3.13
+cpython-3.13.18-linux-x86_64-gnu                  /usr/local/bin/python3 -> python3.13
+cpython-3.13.18-linux-x86_64-gnu                  /usr/local/bin/python -> python3.13
+cpython-3.13.18-linux-x86_64-gnu                  /usr/bin/python3.13
+
+== [3] Tạo project mới ==
+.git
+.gitignore
+.python-version
+README.md
+main.py
+pyproject.toml
+--- pyproject.toml ---
+[project]
+name = "demo-project"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = []
+
+== [4] uv add requests (tự tạo .venv + uv.lock) ==
+--- pyproject.toml sau khi add ---
+[project]
+name = "demo-project"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "requests==2.32.3",
+]
+--- 15 dòng đầu uv.lock ---
+version = 1
+revision = 3
+requires-python = ">=3.13"
+
+[[package]]
+name = "certifi"
+version = "2026.10.23"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/fd/11/b524cbd9bbdaca58608e4cf4053fd463417549e1959fa8d3aa18319f9555/certifi-2026.10.23.tar.gz", hash = "sha256:a9895e6e2758b371e0545e321a3a8fd1fcfd9829ada8824a936dfb16aaaf36cd", size = 136225, upload-time = "2026-10-23T11:36:16.478Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/32/d1/a3652fe2c19134d0d15922177821d863cbd7e842d53a21bbe7e8e3a1b5ac/certifi-2026.10.23-py3-none-any.whl", hash = "sha256:e9b54de76e530bb6cf0ccd036787103acb58fd42ba930ea8bf948ddbaa2f61d1", size = 135082, upload-time = "2026-10-23T11:36:14.763Z" },
+]
+
+[[package]]
+name = "charset-normalizer"
+
+== [5] uv run ==
+Python version : 3.13.18
+sys.executable : /tmp/uv_demo/demo_project/.venv/bin/python3
+sys.prefix     : /tmp/uv_demo/demo_project/.venv
+base_prefix    : /usr/local
+In a venv?     : True
+requests       : 2.32.3
+six            : (not installed)
+
+== [6] Tái lập: xoá .venv rồi uv sync ==
+requests 2.32.3
+
+== [7] Benchmark: cài pandas+requests+flask (cache đã ấm) ==
+pip install : 1.48 s
+uv pip     : 0.05 s
+uv nhanh hơn ~30x
