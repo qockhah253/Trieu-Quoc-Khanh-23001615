@@ -1,0 +1,18 @@
+# Cách 3: chạy MySQL + PostgreSQL bằng Docker (không cài trực tiếp vào Windows)
+# Chạy: docker compose -f C:\dev\TrieuQuocKhanh-2A202603749-Env-Git-RDBMS\sql\docker-compose.yml up -d
+services:
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+    ports: ["3307:3306"]          # 3307 để không đụng MySQL của XAMPP (3306)
+    volumes: [mysql_data:/var/lib/mysql]
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_PASSWORD: postgres123
+    ports: ["5433:5432"]          # 5433 để không đụng PostgreSQL 18 cài sẵn (5432)
+    volumes: [pg_data:/var/lib/postgresql/data]
+volumes:
+  mysql_data:
+  pg_data:

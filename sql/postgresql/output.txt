@@ -1,0 +1,190 @@
+psql:01_schema.sql:5: NOTICE:  database "school_demo" does not exist, skipping
+SELECT student_code, full_name, birth_date
+FROM students
+WHERE birth_date BETWEEN '2004-01-01' AND '2004-12-31'
+ORDER BY birth_date DESC
+LIMIT 3;
+ student_code |    full_name     | birth_date 
+--------------+------------------+------------
+ SV006        | Hoàng Gia Hân    | 2004-12-01
+ SV004        | Lê Minh Châu     | 2004-08-09
+ SV001        | Triệu Quốc Khánh | 2004-05-03
+(3 rows)
+
+SELECT student_code, full_name, email
+FROM students
+WHERE email IS NULL OR full_name LIKE '%Minh%';
+ student_code |   full_name   |      email       
+--------------+---------------+------------------
+ SV004        | Lê Minh Châu  | chau@example.edu
+ SV006        | Hoàng Gia Hân | 
+(2 rows)
+
+SELECT s.student_code, s.full_name, c.course_code, c.title, e.score
+FROM enrollments e
+JOIN students s ON s.student_id = e.student_id
+JOIN courses  c ON c.course_id  = e.course_id
+ORDER BY s.student_code, c.course_code;
+ student_code |    full_name     | course_code |             title              | score 
+--------------+------------------+-------------+--------------------------------+-------
+ SV001        | Triệu Quốc Khánh | CS2001      | Cơ sở dữ liệu                  |  8.50
+ SV001        | Triệu Quốc Khánh | CS3005      | Học máy                        |  9.50
+ SV001        | Triệu Quốc Khánh | ET3001      | Xử lý ảnh và Thị giác máy tính |  9.00
+ SV002        | Nguyễn Văn An    | ET3001      | Xử lý ảnh và Thị giác máy tính |  7.00
+ SV002        | Nguyễn Văn An    | ET3002      | Hệ điều hành nhúng             |  6.50
+ SV002        | Nguyễn Văn An    | MA1001      | Đại số tuyến tính              |  4.00
+ SV003        | Trần Thị Bình    | CS2001      | Cơ sở dữ liệu                  |  8.00
+ SV003        | Trần Thị Bình    | CS3005      | Học máy                        |  7.50
+ SV004        | Lê Minh Châu     | CS2001      | Cơ sở dữ liệu                  |  5.50
+ SV004        | Lê Minh Châu     | MA2002      | Xác suất thống kê              |      
+ SV005        | Phạm Đức Dũng    | MA1001      | Đại số tuyến tính              |  9.00
+ SV005        | Phạm Đức Dũng    | MA2002      | Xác suất thống kê              |  8.00
+(12 rows)
+
+SELECT s.full_name, COALESCE(d.dept_name, '(chưa phân khoa)') AS dept
+FROM students s
+LEFT JOIN departments d ON d.dept_id = s.dept_id
+ORDER BY s.student_id;
+    full_name     |       dept        
+------------------+-------------------
+ Triệu Quốc Khánh | Điện tử - Tin học
+ Nguyễn Văn An    | Điện tử - Tin học
+ Trần Thị Bình    | Khoa học máy tính
+ Lê Minh Châu     | Khoa học máy tính
+ Phạm Đức Dũng    | Toán ứng dụng
+ Hoàng Gia Hân    | (chưa phân khoa)
+(6 rows)
+
+SELECT c.course_code, c.title,
+       COUNT(*)              AS so_sv,
+       ROUND(AVG(e.score),2) AS diem_tb,
+       MAX(e.score)          AS diem_max
+FROM courses c
+JOIN enrollments e ON e.course_id = c.course_id
+GROUP BY c.course_id, c.course_code, c.title
+HAVING COUNT(*) >= 2
+ORDER BY diem_tb DESC;
+ course_code |             title              | so_sv | diem_tb | diem_max 
+-------------+--------------------------------+-------+---------+----------
+ CS3005      | Học máy                        |     2 |    8.50 |     9.50
+ MA2002      | Xác suất thống kê              |     2 |    8.00 |     8.00
+ ET3001      | Xử lý ảnh và Thị giác máy tính |     2 |    8.00 |     9.00
+ CS2001      | Cơ sở dữ liệu                  |     3 |    7.33 |     8.50
+ MA1001      | Đại số tuyến tính              |     2 |    6.50 |     9.00
+(5 rows)
+
+SELECT s.full_name, ROUND(AVG(e.score),2) AS gpa
+FROM students s JOIN enrollments e ON e.student_id = s.student_id
+GROUP BY s.student_id, s.full_name
+HAVING AVG(e.score) > (SELECT AVG(score) FROM enrollments)
+ORDER BY gpa DESC;
+    full_name     | gpa  
+------------------+------
+ Triệu Quốc Khánh | 9.00
+ Phạm Đức Dũng    | 8.50
+ Trần Thị Bình    | 7.75
+(3 rows)
+
+SELECT s.full_name, c.course_code, e.score,
+       CASE WHEN e.score IS NULL THEN 'Chưa có điểm'
+            WHEN e.score >= 8.5  THEN 'A'
+            WHEN e.score >= 7.0  THEN 'B'
+            WHEN e.score >= 5.5  THEN 'C'
+            WHEN e.score >= 4.0  THEN 'D'
+            ELSE 'F' END AS grade
+FROM enrollments e
+JOIN students s ON s.student_id = e.student_id
+JOIN courses  c ON c.course_id  = e.course_id
+ORDER BY s.full_name, c.course_code;
+    full_name     | course_code | score |    grade     
+------------------+-------------+-------+--------------
+ Lê Minh Châu     | CS2001      |  5.50 | C
+ Lê Minh Châu     | MA2002      |       | Chưa có điểm
+ Nguyễn Văn An    | ET3001      |  7.00 | B
+ Nguyễn Văn An    | ET3002      |  6.50 | C
+ Nguyễn Văn An    | MA1001      |  4.00 | D
+ Phạm Đức Dũng    | MA1001      |  9.00 | A
+ Phạm Đức Dũng    | MA2002      |  8.00 | B
+ Triệu Quốc Khánh | CS2001      |  8.50 | A
+ Triệu Quốc Khánh | CS3005      |  9.50 | A
+ Triệu Quốc Khánh | ET3001      |  9.00 | A
+ Trần Thị Bình    | CS2001      |  8.00 | B
+ Trần Thị Bình    | CS3005      |  7.50 | B
+(12 rows)
+
+SELECT c.course_code, s.full_name, e.score,
+       RANK() OVER (PARTITION BY c.course_id ORDER BY e.score DESC) AS hang
+FROM enrollments e
+JOIN students s ON s.student_id = e.student_id
+JOIN courses  c ON c.course_id  = e.course_id
+WHERE e.score IS NOT NULL
+ORDER BY c.course_code, hang;
+ course_code |    full_name     | score | hang 
+-------------+------------------+-------+------
+ CS2001      | Triệu Quốc Khánh |  8.50 |    1
+ CS2001      | Trần Thị Bình    |  8.00 |    2
+ CS2001      | Lê Minh Châu     |  5.50 |    3
+ CS3005      | Triệu Quốc Khánh |  9.50 |    1
+ CS3005      | Trần Thị Bình    |  7.50 |    2
+ ET3001      | Triệu Quốc Khánh |  9.00 |    1
+ ET3001      | Nguyễn Văn An    |  7.00 |    2
+ ET3002      | Nguyễn Văn An    |  6.50 |    1
+ MA1001      | Phạm Đức Dũng    |  9.00 |    1
+ MA1001      | Nguyễn Văn An    |  4.00 |    2
+ MA2002      | Phạm Đức Dũng    |  8.00 |    1
+(11 rows)
+
+CREATE VIEW v_student_credits AS
+SELECT s.student_code, s.full_name, COALESCE(SUM(c.credits),0) AS tong_tin_chi
+FROM students s
+LEFT JOIN enrollments e ON e.student_id = s.student_id
+LEFT JOIN courses c     ON c.course_id  = e.course_id
+GROUP BY s.student_id, s.student_code, s.full_name;
+CREATE VIEW
+SELECT * FROM v_student_credits ORDER BY tong_tin_chi DESC;
+ student_code |    full_name     | tong_tin_chi 
+--------------+------------------+--------------
+ SV001        | Triệu Quốc Khánh |           10
+ SV002        | Nguyễn Văn An    |            9
+ SV003        | Trần Thị Bình    |            7
+ SV004        | Lê Minh Châu     |            6
+ SV005        | Phạm Đức Dũng    |            5
+ SV006        | Hoàng Gia Hân    |            0
+(6 rows)
+
+START TRANSACTION;
+START TRANSACTION
+UPDATE enrollments SET score = 10 WHERE student_id = 2;
+UPDATE 3
+DELETE FROM enrollments WHERE score < 5;
+DELETE 0
+SELECT COUNT(*) AS rows_trong_transaction FROM enrollments;
+ rows_trong_transaction 
+------------------------
+                     12
+(1 row)
+
+ROLLBACK;
+ROLLBACK
+SELECT COUNT(*) AS rows_sau_rollback FROM enrollments;
+ rows_sau_rollback 
+-------------------
+                12
+(1 row)
+
+START TRANSACTION;
+START TRANSACTION
+UPDATE enrollments SET score = 7.25 WHERE student_id = 4 AND course_id = 6;
+UPDATE 1
+COMMIT;
+COMMIT
+SELECT student_id, course_id, score FROM enrollments WHERE student_id = 4;
+ student_id | course_id | score 
+------------+-----------+-------
+          4 |         3 |  5.50
+          4 |         6 |  7.25
+(2 rows)
+
+INSERT INTO enrollments (student_id, course_id, semester, score) VALUES (6, 1, '2026.1', 11);
+psql:../common/03_queries.sql:95: ERROR:  new row for relation "enrollments" violates check constraint "enrollments_score_check"
+DETAIL:  Failing row contains (6, 1, 2026.1, 11.00).
