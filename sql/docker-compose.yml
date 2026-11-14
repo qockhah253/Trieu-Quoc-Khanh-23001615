@@ -1,5 +1,5 @@
 # Cách 3: chạy MySQL + PostgreSQL bằng Docker (không cài trực tiếp vào Windows)
-# Chạy: docker compose -f C:\dev\TrieuQuocKhanh-2A202603749-Env-Git-RDBMS\sql\docker-compose.yml up -d
+# Chạy: docker compose -f C:\dev\Trieu-Quoc-Khanh-23001615\sql\docker-compose.yml up -d
 services:
   mysql:
     image: mysql:8.4

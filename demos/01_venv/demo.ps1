@@ -1,5 +1,5 @@
 # Demo venv trên Windows PowerShell
-# Chạy: powershell -ExecutionPolicy Bypass -File C:\dev\TrieuQuocKhanh-2A202603749-Env-Git-RDBMS\demos\01_venv\demo.ps1
+# Chạy: powershell -ExecutionPolicy Bypass -File C:\dev\Trieu-Quoc-Khanh-23001615\demos\01_venv\demo.ps1
 $ErrorActionPreference = "Stop"
 $Here   = Split-Path -Parent $MyInvocation.MyCommand.Path
 $Check  = Join-Path $Here "..\common\check_env.py"

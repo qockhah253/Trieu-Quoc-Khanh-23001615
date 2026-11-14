@@ -51,7 +51,7 @@
 
 | # | Thao tác |
 |---|---|
-| 1 | `docker compose -f C:\dev\TrieuQuocKhanh-2A202603749-Env-Git-RDBMS\sql\docker-compose.yml up -d` |
+| 1 | `docker compose -f C:\dev\Trieu-Quoc-Khanh-23001615\sql\docker-compose.yml up -d` |
 | 2 | MySQL: `docker exec -it sql-mysql-1 mysql -uroot -proot123` |
 | 3 | Postgres: `docker exec -it sql-postgres-1 psql -U postgres` |
 
@@ -60,7 +60,7 @@
 ### 4.1 Trên MySQL/MariaDB (XAMPP)
 
 ```powershell
-$Repo  = "C:\dev\TrieuQuocKhanh-2A202603749-Env-Git-RDBMS"
+$Repo  = "C:\dev\Trieu-Quoc-Khanh-23001615"
 $MySQL = "C:\xampp\mysql\bin\mysql.exe"
 Get-Content "$Repo\sql\mysql\01_schema.sql"  | & $MySQL --default-character-set=utf8mb4 -u root
 Get-Content "$Repo\sql\common\02_seed.sql"   | & $MySQL --default-character-set=utf8mb4 -u root school_demo
@@ -71,7 +71,7 @@ Hoặc phpMyAdmin → tab **SQL** → dán lần lượt nội dung 3 file → *
 ### 4.2 Trên PostgreSQL 18
 
 ```powershell
-$Repo = "C:\dev\TrieuQuocKhanh-2A202603749-Env-Git-RDBMS"
+$Repo = "C:\dev\Trieu-Quoc-Khanh-23001615"
 $Psql = "C:\Program Files\PostgreSQL\18\bin\psql.exe"
 $env:PGCLIENTENCODING = "UTF8"
 & $Psql -U postgres -f "$Repo\sql\postgresql\01_schema.sql"

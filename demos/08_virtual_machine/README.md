@@ -1,6 +1,6 @@
 # Demo 08 — Virtual Machine (VirtualBox + Vagrant) trên Windows
 
-> Không chạy được trong môi trường Linux sinh output (không có `/dev/kvm`, không có hypervisor) → demo này **chạy trên máy Windows cá nhân**. Chụp màn hình các bước vào `C:\dev\TrieuQuocKhanh-2A202603749-Env-Git-RDBMS\screenshots\`.
+> Không chạy được trong môi trường Linux sinh output (không có `/dev/kvm`, không có hypervisor) → demo này **chạy trên máy Windows cá nhân**. Chụp màn hình các bước vào `C:\dev\Trieu-Quoc-Khanh-23001615\screenshots\`.
 
 ## Bước 1 — Cài đặt
 
@@ -16,7 +16,7 @@
 
 | # | Lệnh | Đầu ra cần chụp |
 |---|---|---|
-| 1 | `cd C:\dev\TrieuQuocKhanh-2A202603749-Env-Git-RDBMS\demos\08_virtual_machine` | — |
+| 1 | `cd C:\dev\Trieu-Quoc-Khanh-23001615\demos\08_virtual_machine` | — |
 | 2 | `vagrant up` (lần đầu tải box ~1 GB) | Dòng `Guest kernel` in ra kernel Ubuntu (khác Windows) |
 | 3 | `vagrant ssh -c "uname -a; hostname; free -h"` | hostname `khanh-vm`, RAM ~2 GB |
 | 4 | Mở trình duyệt `http://localhost:8080` | JSON có `"kernel": "6.8.x-generic"` |

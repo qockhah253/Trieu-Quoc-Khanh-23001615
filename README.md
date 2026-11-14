@@ -1,6 +1,6 @@
 # Môi trường ảo, Máy ảo, Container · Python Env Managers · Git/GitHub · RDBMS & SQL
 
-**Sinh viên:** Triệu Quốc Khánh — **MSSV:** 2A202603749
+**Sinh viên:** Triệu Quốc Khánh — **MSSV:** 23001615
 **Hạn nộp:** 11:00 15/11/2026
 
 ## Nội dung bài nộp
